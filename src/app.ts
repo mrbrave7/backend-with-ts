@@ -1,11 +1,15 @@
-import  Express  from "express";
+import express from "express";
+import createHttpError from "http-errors";
 
-const App = Express()
+import globalErrorHandler from "./middleware/globalErrorHandler";
 
-App.get("/",(req,res,next) => {
-    res.status(200).json({
-        message:"Hello From Homepage"
-    })
-})
+const app = express();
 
-export default App
+app.get("/", (req, res, next) => {
+    const error = createHttpError(400, "Something Went Wrong");
+    throw error;
+});
+
+app.use(globalErrorHandler);
+
+export default app;
